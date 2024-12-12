@@ -10,10 +10,10 @@ jobs:
         with:
           node-version: '16'
       - run: npm install
-      - name: Create SBOM with CycloneDX
-        uses: CycloneDX/gh-node-module-generatebom@v1
-        with: 
-          output: 'results.json'
+      - name: install NPM audit
+        run: npm install --global @cyclonedx/cyclonedx-npm
+      - name: Create SBOM 
+        run: cyclonedx-npm --output-file results.json
       - name: send curl
         run: |
           curl -X POST -H "Content-Type: multipart/form-data" -F "file=@results.json"  http://wat8zaexdh06varq97tff.appsecengineer.training:8880/callback
